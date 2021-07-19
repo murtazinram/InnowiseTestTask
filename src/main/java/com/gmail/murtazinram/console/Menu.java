@@ -28,7 +28,7 @@ public class Menu {
         while (!isExit) {
             printMenu();
             try {
-                var choice = Integer.parseInt(reader.readLine());
+                int choice = Integer.parseInt(reader.readLine());
                 MenuEntry entry = entries.get(choice);
                 entry.run();
             } catch (IOException e) {
@@ -38,7 +38,7 @@ public class Menu {
     }
 
     private void printMenu() {
-        var item = 0;
+        int item = 0;
         System.out.println("menu");
         for (MenuEntry entry : entries) {
             System.out.println(item++ + "_" + entry.getTitle());

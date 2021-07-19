@@ -3,46 +3,43 @@ package com.gmail.murtazinram.validator;
 import com.gmail.murtazinram.beans.Role;
 import com.gmail.murtazinram.beans.User;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public interface ValidateUser {
     String EMAIL_PATTERN = "\\w+@\\w+.\\w+";
     String PHONE_PATTERN = "375\\d{9}";
 
-    Collection<String> apply(User user);
+    List<String> apply(User user);
 
-    default Collection<String> usernameValidate(User user) {
-        var result = new ArrayList<String>(1);
+    default List<String> usernameValidate(User user) {
+        ArrayList<String> result = new ArrayList<>(1);
         int size = user.getName().trim().length();
         if (size < 3 || size > 30)
             result.add("Username error. Too short or too long name");
         return result;
     }
 
-    default Collection<String> surnameValidate(User user) {
-        var result = new ArrayList<String>(1);
+    default List<String> surnameValidate(User user) {
+        ArrayList<String> result = new ArrayList<>(1);
         int size = user.getSurname().trim().length();
         if (size < 3 || size > 30)
             result.add("Surname error. Too short or too long surname");
         return result;
     }
 
-    default Collection<String> emailValidate(User user) {
-        var pattern = Pattern.compile(EMAIL_PATTERN);
-        var result = new ArrayList<String>(1);
+    default List<String> emailValidate(User user) {
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        ArrayList<String> result = new ArrayList<>(1);
         if (!pattern.matcher(user.getEmail()).matches()) {
             result.add("Incorrect email!");
         }
         return result;
     }
 
-    default Collection<String> phoneListValidate(User user) {
-        var pattern = Pattern.compile(PHONE_PATTERN);
-        var result = new ArrayList<String>(1);
+    default List<String> phoneListValidate(User user) {
+        Pattern pattern = Pattern.compile(PHONE_PATTERN);
+        ArrayList<String> result = new ArrayList<>(1);
         if (user.getPhonesList().size() > 3) {
             result.add("Too much more phone numbers! Can`t add more than 3 numbers");
         }
@@ -52,8 +49,8 @@ public interface ValidateUser {
         return result;
     }
 
-    default Collection<String> roleValidate(User user) {
-        var result = new ArrayList<String>(1);
+    default List<String> roleValidate(User user) {
+        ArrayList<String> result = new ArrayList<>(1);
         if (user.getRoleList().size() > 2) {
             result.add("you can't have more than 2 roles at the same time");
         }
@@ -77,8 +74,8 @@ public interface ValidateUser {
 
     class Default implements ValidateUser {
         @Override
-        public Collection<String> apply(User user) {
-            Collection<String> strings = usernameValidate(user);
+        public List<String> apply(User user) {
+            List<String> strings = usernameValidate(user);
             strings.addAll(surnameValidate(user));
             strings.addAll(emailValidate(user));
             strings.addAll(phoneListValidate(user));

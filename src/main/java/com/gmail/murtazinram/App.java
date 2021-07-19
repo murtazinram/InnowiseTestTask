@@ -22,7 +22,7 @@ public class App {
         User user = new User();
         List<User> userList = new ArrayList<>();
 
-        try (var reader = new BufferedReader(new InputStreamReader(System.in))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             Menu menu = new Menu(reader);
             createUser(user, userList, menu);
             editUser(userList, menu);
@@ -39,7 +39,7 @@ public class App {
         menu.addEntry(new MenuEntry("save users to file") {
             @Override
             public void run() {
-                try (var writer = new FileWriter(FILE_NAME, true)) {
+                try (FileWriter writer = new FileWriter(FILE_NAME, true)) {
                     for (User user : userList) {
                         writer.append(user.toString());
                         writer.append('\n');
@@ -60,7 +60,7 @@ public class App {
                 try {
                     out("please select the user id to delete");
                     String line = menu.getReader().readLine();
-                    var idForDelete = Integer.parseInt(line);
+                    int idForDelete = Integer.parseInt(line);
                     userList.remove(idForDelete);
                 } catch (IOException | IndexOutOfBoundsException e) {
                     System.out.println(e.getMessage());
@@ -81,7 +81,7 @@ public class App {
 
                     addUserOrEdit(menu, temp);
 
-                    var apply = new ValidateUser.Default().apply(temp);
+                    List<String> apply = new ValidateUser.Default().apply(temp);
                     if (!apply.isEmpty()) {
                         apply.forEach(System.out::println);
                         throw new IllegalArgumentException("---!!!please add correct data!!!---");
@@ -112,7 +112,7 @@ public class App {
                 try {
                     addUserOrEdit(menu, user);
 
-                    var apply = new ValidateUser.Default().apply(user);
+                    List<String> apply = new ValidateUser.Default().apply(user);
                     if (!apply.isEmpty()) {
                         apply.forEach(System.out::println);
                         throw new IllegalArgumentException("---!!!please add correct data!!!---");
